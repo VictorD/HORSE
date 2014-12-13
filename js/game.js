@@ -360,14 +360,14 @@ var gameTitle = function(game){
 	}
 }
 
-
-
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
-game.state.add("Boot", boot);
-game.state.add("PreloadAssets", preload);
-game.state.add("GameTitle", gameTitle);
-game.state.add("IntroScreen", introScreen);
-game.state.add("TheGame", theGame);
-game.state.add("GameOver", gameOver);
-game.state.add("WinScreen", winScreen);
-game.state.start("Boot");
+function startGame() {
+	var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
+	game.state.add("Boot", boot);
+	game.state.add("PreloadAssets", preload);
+	game.state.add("GameTitle", gameTitle);
+	game.state.add("IntroScreen", introScreen);
+	game.state.add("TheGame", theGame);
+	game.state.add("GameOver", gameOver);
+	game.state.add("WinScreen", winScreen);
+	game.state.start("Boot");
+}
