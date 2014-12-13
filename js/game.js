@@ -214,6 +214,9 @@ var boot = function(game){
 		 
 		 },
 		create: function(){
+			game.scale.maxWidth = 800;
+			game.scale.maxHeight = 600;
+
 			this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 			this.scale.pageAlignHorizontally = true;
 			this.scale.setScreenSize();
@@ -361,7 +364,7 @@ var gameTitle = function(game){
 }
 
 function startGame() {
-	var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
+	var game = new Phaser.Game(800, 600, Phaser.AUTO, '#horseLight');
 	game.state.add("Boot", boot);
 	game.state.add("PreloadAssets", preload);
 	game.state.add("GameTitle", gameTitle);
