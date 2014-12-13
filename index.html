@@ -34,14 +34,35 @@ var gameOver = function(game){
 	}
 }
 
+var introScreen = function(game){
+	var intro, atPart2 = false;
+	
+	function nextSlide() {
+		this.intro.loadTexture('intro2', 0);
+		this.atPart2 = true;
+		
+		game.input.onDown.addOnce(nextState, this);
+	}
+	
+	function nextState() {
+		this.game.state.start("TheGame");
+	}
+	
+	return {
+		create: function(){
+			this.intro = this.game.add.sprite(400,300,"intro1");
+			this.intro.anchor.setTo(0.5,0.5);
+			
+			game.input.onDown.addOnce(nextSlide, this);
+		}
+	}
+}
+
 var winScreen = function(game){
 	return {
 		create: function(){
 			var gameTitle = this.game.add.sprite(400,300,"winner");
 			gameTitle.anchor.setTo(0.5,0.5);
-			
-			gameOverText = game.add.text(400, 400, 'The end');
-			gameOverText.fixedToCamera = true;
 		},
 		update: function() 
 		{
@@ -62,6 +83,8 @@ var theGame = function(game) {
 	var stars, goal;
 	var horsePower = 0;
 	var horsePowerText;
+	
+	var controlsText;
 	
 	function aWinnerIsYou(player, flag) {
 		this.game.state.start("WinScreen");
@@ -137,8 +160,11 @@ var theGame = function(game) {
 			map.createFromObjects('goal', 34, 'flagpost', 3, true, false, goal);
 			
 			//  The horsePower
-			horsePowerText = game.add.text(16, 16, 'Horse Power: 0', { fontSize: '32px', fill: '#000' });
+			horsePowerText = game.add.text(16, 16, 'Horse Power: 0', { fontSize:'32px', fill: '#2' });
 			horsePowerText.fixedToCamera = true;
+			
+			controlsText = game.add.text(16, 50,  'Move with arrow keys\nNo shooting (Horse is unarmed)', { font: '16px monospace', fill: '#333' });
+			controlsText.fixedToCamera = true;
 			//  Our controls.
 			cursors = game.input.keyboard.createCursorKeys();
 			
@@ -223,7 +249,10 @@ var preload = function(game) {
 			game.load.image('flagpost', 'assets/flagpost.png');
 
 			game.load.image('winner', 'assets/winScreen.png');
-						
+			
+			game.load.image('intro1', 'assets/intro1.png');
+			game.load.image('intro2', 'assets/intro2.png');
+			
 			game.load.image('sky', 'assets/sky.png');
 			game.load.image('ground', 'assets/platform.png');
 			game.load.image('star', 'assets/star.png');
@@ -341,7 +370,7 @@ var gameTitle = function(game){
 
 		},
 		playTheGame: function(){
-			this.game.state.start("TheGame");
+			this.game.state.start("IntroScreen");
 		}
 	}
 }
@@ -352,6 +381,7 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
 game.state.add("Boot", boot);
 game.state.add("PreloadAssets", preload);
 game.state.add("GameTitle", gameTitle);
+game.state.add("IntroScreen", introScreen);
 game.state.add("TheGame", theGame);
 game.state.add("GameOver", gameOver);
 game.state.add("WinScreen", winScreen);
